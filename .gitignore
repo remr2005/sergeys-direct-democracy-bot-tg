@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+#TelegramFiles
+my_bot.*
+.env
+
 # Distribution / packaging
 .Python
 build/
