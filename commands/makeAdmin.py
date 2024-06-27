@@ -1,12 +1,13 @@
 from pyrogram import Client, filters
 import asyncio
-from pyrogram.types import Message, ChatPrivileges, Poll
+import vote
+from pyrogram.types import Message, ChatPrivileges
 import re
 
 def register_makeAdmin_command(app: Client):
     @app.on_message(filters.command("make_admin"))
     async def makeAdmin(client: Client, message: Message):
-        print("Make_admins")
+        print("makeAdmin command received")
         # Берем параметры функции
         args = message.text.split()[1:]
         # Проверка на правильное написание
@@ -14,16 +15,7 @@ def register_makeAdmin_command(app: Client):
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
         
-        poll_message = await client.send_poll(
-            chat_id=message.chat.id,
-            question=f"Дать ли юзеру {args[0]}, роль админа?",
-            options=["Да", "Нет"],
-            is_anonymous=False  # Устанавливаем False, если хотите, чтобы голосование было неанонимным
-        )
-        await asyncio.sleep(30)
-
-        results = {option.text: option.voter_count for option in poll_message.poll.options}
-        if results["Да"] >= results["Нет"]:
+        if await vote.vote(message,client,f"Дать ли юзеру {args[0]}, роль админа?",30):
             #выдача админки
             try:
                 await client.promote_chat_member(
@@ -42,7 +34,7 @@ def register_makeAdmin_command(app: Client):
                 await message.reply(f"Юзеру {args[0]} выданы права админа")
             except:
                 await message.reply("Произошла ошибка")
-            return
-        await message.reply("Голосование провалилось")
+        else:
+            await message.reply("Голосование провалилось")
 
         
