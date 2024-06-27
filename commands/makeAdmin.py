@@ -1,8 +1,6 @@
 from pyrogram import Client, filters
-import asyncio
 import vote
 from pyrogram.types import Message, ChatPrivileges
-import re
 
 def register_makeAdmin_command(app: Client):
     @app.on_message(filters.command("make_admin"))
