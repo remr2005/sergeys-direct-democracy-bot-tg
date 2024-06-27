@@ -19,11 +19,11 @@ def register_help_command(app: Client):
         if len(args)==0:
             await message.reply('''В общем, здрасте. Список всех доступных команд:
                                 make_admin
-                                remove_admin
-                                invite
-                                kick
-                                change_icon
-                                change_name
+                                ~~remove_admin~~
+                                ~~invite~~
+                                ~~kick~~
+                                ~~change_icon~~
+                                ~~change_name~~
 а так же множество других, секретных команд...''')
         elif args[0]=="make_admin":
             await message.reply("""Команда /make_admin, создание голосование по поводу выдачи админки.

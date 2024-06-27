@@ -8,8 +8,10 @@ def register_makeAdmin_command(app: Client):
         print("makeAdmin command received")
         # Берем параметры функции
         args = message.text.split()[1:]
-        # Проверка на правильное написание
-        # TODO if len(args)<=7 or len(args)>7: await message.reply("Ауч, вы написали какую то поеботу. Используйте /help make_admin, что бы узнать как пользоваться этой функцией")
+        # Проверка на правильное написание TODO сделать более тонкую настройку админа
+        if len(args)==0:     
+            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help make_admin, что бы узнать как пользоваться этой функцией")
+            return
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
         
