@@ -4,6 +4,7 @@ import os
 import importlib
 import logging
 
+# Информация по логгированию, довольно сухая, честно говоря
 logger = logging.getLogger('pyrogram')
 logger.setLevel(logging.DEBUG)
 
@@ -24,4 +25,5 @@ for filename in os.listdir(commands_dir):
 print("Bot is running...")
 
 # Запуск бота
-app.run()
+if __name__ == "__main__":
+    app.run()
