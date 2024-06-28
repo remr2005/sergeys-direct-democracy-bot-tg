@@ -9,7 +9,7 @@ def register_makeAdmin_command(app: Client):
         # Берем параметры функции
         args = message.text.split()[1:]
         # Проверка на правильное написание TODO сделать более тонкую настройку админа
-        if len(args)==0:     
+        if len(args)==0 or len(args)>1:     
             await message.reply("Ауч, вы написали какую то поеботу. Используйте /help make_admin, что бы узнать как пользоваться этой функцией")
             return
         #Получаем ID юзера
@@ -36,5 +36,3 @@ def register_makeAdmin_command(app: Client):
                 await message.reply("Произошла ошибка")
         else:
             await message.reply("Голосование провалилось")
-
-        

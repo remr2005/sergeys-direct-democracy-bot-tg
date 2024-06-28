@@ -9,6 +9,7 @@ def register_help_command(app: Client):
             BotCommand("help", "Получить помощь"),
             BotCommand("make_admin", "Дать пользователю админку в ходе голосования"),
             BotCommand("remove_admin", "Забрать у пользователя админку в ходе голосования"),
+            BotCommand("kick", "Кикнуть пользователя в ходе голосования"),
         ]
         await client.set_bot_commands(commands)
         await message.reply("Команды успешно установлены!")
@@ -22,7 +23,7 @@ def register_help_command(app: Client):
                                 make_admin
                                 remove_admin
                                 ~~invite~~
-                                ~~kick~~
+                                kick
                                 ~~change_icon~~
                                 ~~change_name~~
 а так же множество других, секретных команд...''')
@@ -34,4 +35,8 @@ def register_help_command(app: Client):
             await message.reply("""Команда /remove_admin, создание голосование по поводу отбирания админки.
 Использование: /remove_admin [user]
 Пример: /remove_admin @example_user""")
+        elif args[0]=="kick":
+            await message.reply("""Команда /kick, создание голосование по поводу кика пользователя.
+Использование: /kick [user]
+Пример: /kick @example_user""")
             
