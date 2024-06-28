@@ -1,5 +1,5 @@
 from pyrogram import Client, filters
-from pyrogram.types import Message, ChatPrivileges
+from pyrogram.types import Message, ChatPermissions
 import vote
 
 def register_removeAdmin_command(app: Client):
@@ -15,24 +15,15 @@ def register_removeAdmin_command(app: Client):
             return
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
-        
-        if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",5):
+        if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",1):
             #выдача админки
             try:
-                await client.promote_chat_member(
-                        chat_id=message.chat.id,
-                        user_id=user.id,
-                        privileges=ChatPrivileges(
-                            can_delete_messages=False,
-                            can_manage_video_chats=False,
-                            can_restrict_members=False,
-                            can_change_info=False,
-                            can_invite_users=True,
-                            can_pin_messages=False
-                        )
-                    )
+                await client.restrict_chat_member(message.chat.id,
+                                                user.id,
+                                                permissions=ChatPermissions.default(message.chat)['permissions']
+                                                )
                 print(f"Права администратора у пользователя {user.id} в чате {message.chat.id} были успешно удалены.")
-                await message.reply(f"У юзера {args[0]} отзваны права админа")
+                await message.reply(f"У юзера {args[0]} отозваны права админа")
             except:
                 await message.reply("Произошла ошибка")
         else:
