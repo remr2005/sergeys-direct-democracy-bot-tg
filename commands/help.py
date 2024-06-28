@@ -11,6 +11,8 @@ def register_help_command(app: Client):
             BotCommand("remove_admin", "Забрать у пользователя админку в ходе голосования"),
             BotCommand("kick", "Кикнуть пользователя в ходе голосования"),
             BotCommand("invite", "Кинуть инвайт-ссылку тому кто начал голосование"),
+            BotCommand("change_icon", "Изменить аву группы, на ту что предложил юзер"),
+            BotCommand("change_name", "Изменить название группы"),
         ]
         await client.set_bot_commands(commands)
         await message.reply("Команды успешно установлены!")
@@ -25,7 +27,7 @@ def register_help_command(app: Client):
                                 remove_admin
                                 invite
                                 kick
-                                ~~change_icon~~
+                                change_icon
                                 ~~change_name~~
 а так же множество других, секретных команд...''')
         elif args[0]=="make_admin":
@@ -43,4 +45,7 @@ def register_help_command(app: Client):
         elif args[0]=="invite":
             await message.reply("""Команда /invite, создание голосование по киданию ссылки инвайта, тому кто начал голосование.
 Использование: /invite""")
+        elif args[0]=="change_icon":
+            await message.reply("""Команда /change_icon, создание голосование по изменнению авы группы.
+Использование: /change_icon (прикрепите к этому сообщению какую то фотку)""")
             

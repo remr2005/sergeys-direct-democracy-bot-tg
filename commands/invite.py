@@ -24,8 +24,8 @@ def register_invite_command(app: Client):
                 await client.send_message(
                     chat_id=message.from_user.id,
                     text=f"Пиздуй сюда чепух --> {link}")
-            except:
-                await message.reply("Произошла ошибка")
+            except Exception as e:
+                message.reply_text(f"Произошла ошибка: {e}")
         else:
             await message.reply("Голосование провалилось")
 

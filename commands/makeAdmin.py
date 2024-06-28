@@ -32,7 +32,7 @@ def register_makeAdmin_command(app: Client):
                 )
                 print(f"Пользователь {user.id} назначен администратором в чате {message.chat.id}")
                 await message.reply(f"Юзеру {args[0]} выданы права админа")
-            except:
-                await message.reply("Произошла ошибка")
+            except Exception as e:
+                message.reply_text(f"Произошла ошибка: {e}")
         else:
             await message.reply("Голосование провалилось")

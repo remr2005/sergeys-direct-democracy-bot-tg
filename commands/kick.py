@@ -21,8 +21,8 @@ def register_kick_command(app: Client):
             # Время, до которого пользователь будет забанен (например, на 1 день)
                 await app.ban_chat_member(message.chat.id, user.id, datetime.now() + timedelta(minutes=1))
                 await message.reply(f"Юзер {args[0]} ликвидирован")
-            except:
-                await message.reply("Произошла ошибка")
+            except Exception as e:
+                message.reply_text(f"Произошла ошибка: {e}")
         else:
             await message.reply("Голосование провалилось")
 

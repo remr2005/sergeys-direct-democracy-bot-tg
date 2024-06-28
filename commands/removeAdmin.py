@@ -24,7 +24,7 @@ def register_removeAdmin_command(app: Client):
                                                 )
                 print(f"Права администратора у пользователя {user.id} в чате {message.chat.id} были успешно удалены.")
                 await message.reply(f"У юзера {args[0]} отозваны права админа")
-            except:
-                await message.reply("Произошла ошибка")
+            except Exception as e:
+                message.reply_text(f"Произошла ошибка: {e}")
         else:
             await message.reply("Голосование провалилось")
