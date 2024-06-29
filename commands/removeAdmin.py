@@ -15,7 +15,7 @@ def register_removeAdmin_command(app: Client):
             return
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
-        if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",1):
+        if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",60*60*12):
             #выдача админки
             try:
                 await client.restrict_chat_member(message.chat.id,

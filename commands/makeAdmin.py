@@ -15,7 +15,7 @@ def register_makeAdmin_command(app: Client):
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
         
-        if await vote.vote(message,client,f"Дать ли юзеру {args[0]}, роль админа?",30):
+        if await vote.vote(message,client,f"Дать ли юзеру {args[0]}, роль админа?",60*60*12):
             #выдача админки
             try:
                 await client.promote_chat_member(

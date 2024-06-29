@@ -9,7 +9,7 @@ def register_changeIcon_command(app: Client):
         # Берем параметры функции
         # Проверка на правильное написание TODO сделать более тонкую настройку админа
 
-        if await vote.vote(message,client,f"Изменить ли аву группы, на то что было предложенно выше?",1):
+        if await vote.vote(message,client,f"Изменить ли аву группы, на то что было предложенно выше?",60*60*12):
             if message.photo:
         # Загрузка фотографии
                 photo = message.photo  # Берем фотографию с наибольшим разрешением

@@ -28,7 +28,7 @@ def register_help_command(app: Client):
                                 invite
                                 kick
                                 change_icon
-                                ~~change_name~~
+                                change_name
 а так же множество других, секретных команд...''')
         elif args[0]=="make_admin":
             await message.reply("""Команда /make_admin, создание голосование по поводу выдачи админки.
@@ -48,4 +48,9 @@ def register_help_command(app: Client):
         elif args[0]=="change_icon":
             await message.reply("""Команда /change_icon, создание голосование по изменнению авы группы.
 Использование: /change_icon (прикрепите к этому сообщению какую то фотку)""")
+        elif args[0]=="change_name":
+            await message.reply("""Команда /change_name, создание голосование по изменнению названия группы.
+Использование: /change_name [какое то название]
+Пример: /change_name example""")
             
+

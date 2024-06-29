@@ -15,7 +15,7 @@ def register_kick_command(app: Client):
             return
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
-        if await vote.vote(message,client,f"Кикнуть ли юзера {args[0]}?",30):
+        if await vote.vote(message,client,f"Кикнуть ли юзера {args[0]}?",60*60*12):
             # кик
             try:
             # Время, до которого пользователь будет забанен (например, на 1 день)

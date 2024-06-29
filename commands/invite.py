@@ -14,7 +14,7 @@ def register_invite_command(app: Client):
             await message.reply("Ауч, вы написали какую то поеботу. Используйте /help invite, что бы узнать как пользоваться этой функцией")
             return
        
-        if await vote.vote(message,client,f"Дать ли ссылку инвайт {message.from_user.first_name}?",30):
+        if await vote.vote(message,client,f"Дать ли ссылку инвайт {message.from_user.first_name}?",60*60*12):
             # добавление
             try:
             # Время, до которого пользователь будет забанен (например, на 1 день)
