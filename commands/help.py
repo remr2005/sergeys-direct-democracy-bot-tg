@@ -22,14 +22,15 @@ def register_help_command(app: Client):
         print("Help command received")
         args = message.text.split()[1:]
         if len(args)==0:
-            await message.reply('''В общем, здрасте, наш ебейший сервак https://discord.gg/UEYQPsAuR4. Вы так же можете присоединиться к разработке бота, форкнув его с гитхаба: https://github.com/remr2005/sergeys-direct-democracy-bot-tg. Список всех доступных команд:
+            await message.reply('''В общем, здрасте, наш ебейший сервак https://discord.gg/UEYQPsAuR4, а так же канал в котором есть новости о разработке https://t.me/churkopeiaForever. Список всех доступных команд:
                                 make_admin
                                 remove_admin
                                 invite
                                 kick
                                 change_icon
                                 change_name
-а так же множество других, секретных команд...''')
+а так же множество других, секретных команд...
+P.S Вы так же можете посмотреть исходный код https://github.com/remr2005/sergeys-direct-democracy-bot-tg.''')
         elif args[0]=="make_admin":
             await message.reply("""Команда /make_admin, создание голосование по поводу выдачи админки.
 Использование: /make_admin [user]
