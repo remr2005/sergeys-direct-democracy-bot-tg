@@ -22,7 +22,7 @@ def register_help_command(app: Client):
         print("Help command received")
         args = message.text.split()[1:]
         if len(args)==0:
-            await message.reply('''В общем, здрасте, наш ебейший сервак https://discord.gg/UEYQPsAuR4, а так же канал в котором есть новости о разработке https://t.me/churkopeiaForever. Список всех доступных команд:
+            await message.reply('''В общем, здрасте, наш ебейший сервак https://discord.gg/UEYQPsAuR4, а так же канал в котором есть новости о разработке и щитпост(его гораздо больше) https://t.me/churkopeiaForever. Список всех доступных команд:
                                 make_admin
                                 remove_admin
                                 invite
