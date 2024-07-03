@@ -2,3 +2,5 @@ pyrogram
 tgcrypto
 python-dotenvnv
 timedelta
+pillow
+gradio_client
