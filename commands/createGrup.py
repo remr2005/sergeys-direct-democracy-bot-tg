@@ -10,6 +10,7 @@ def register_createGrup_command(app: Client):
     async def createGrup(client: Client, message: Message):
         print("create_group command received")
         args = message.text.split()[1:]
+        await message.reply("подождите немного, это займет некоторое время...")
         text = ''.join([i+" " for i in args])
         cl = gradio_client.Client("stabilityai/stable-diffusion-3-medium")
         try:
