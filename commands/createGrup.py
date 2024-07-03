@@ -3,6 +3,7 @@ from pyrogram.types import Message
 import gradio_client
 from PIL import Image
 import os
+import asyncio
 from random import random
 
 def register_createGrup_command(app: Client):
@@ -25,16 +26,27 @@ def register_createGrup_command(app: Client):
             else:
                 word = "cat"
             print(word)
-            result =  cl.predict(
-                    prompt=f"furry-{word} muscular 3d hentai "+text,
-                    negative_prompt="",
-                    randomize_seed=True,
-                    width=1024,
-                    height=1024,
-                    guidance_scale=5,
-                    num_inference_steps=28,
-                    api_name="/infer"
-            )
+            async def async_predict(word, text):
+                return await asyncio.to_thread(cl.predict,
+                                            prompt=f"furry-{word} muscular 3d hentai " + text,
+                                            negative_prompt="",
+                                            randomize_seed=True,
+                                            width=1024,
+                                            height=1024,
+                                            guidance_scale=5,
+                                            num_inference_steps=28,
+                                            api_name="/infer")
+            # result =  cl.predict(
+            #         prompt=f"furry-{word} muscular 3d hentai "+text,
+            #         negative_prompt="",
+            #         randomize_seed=True,
+            #         width=1024,
+            #         height=1024,
+            #         guidance_scale=5,
+            #         num_inference_steps=28,
+            #         api_name="/infer"
+            # )
+            result = await async_predict(word, text)
         except Exception as e:
             await message.reply(f"Произошла непредвиденная ошибка:{e}")
         print(result)

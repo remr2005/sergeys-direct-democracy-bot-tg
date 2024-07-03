@@ -13,6 +13,7 @@ def register_help_command(app: Client):
             BotCommand("invite", "Кинуть инвайт-ссылку тому кто начал голосование"),
             BotCommand("change_icon", "Изменить аву группы, на ту что предложил юзер"),
             BotCommand("change_name", "Изменить название группы"),
+            BotCommand("go_to_jail", "Отправить пользователся в тюрьму на 15 минут"),
         ]
         await client.set_bot_commands(commands)
         await message.reply("Команды успешно установлены!")
@@ -53,5 +54,10 @@ P.S Вы так же можете посмотреть исходный код h
             await message.reply("""Команда /change_name, создание голосование по изменнению названия группы.
 Использование: /change_name [какое то название]
 Пример: /change_name example""")
+        elif args[0]=="go_to_jail":
+            await message.reply("""Команда /go_to_jail, создание голосование по отправлению юзера в тюрьму.
+Использование: /go_to_jail [user]
+Пример: /go_to_jail @example""")
+            
             
 

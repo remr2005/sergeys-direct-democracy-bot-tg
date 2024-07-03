@@ -14,7 +14,7 @@ def register_jail_command(app: Client):
         args = message.text.split()[1:]
         # Проверка на правильное написание TODO сделать более тонкую настройку админа
         if len(args)==0 or len(args)>1:     
-            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help make_admin, что бы узнать как пользоваться этой функцией")
+            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help go_to_jail, что бы узнать как пользоваться этой функцией")
             return
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
