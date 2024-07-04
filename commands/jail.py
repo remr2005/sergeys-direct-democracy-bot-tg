@@ -19,19 +19,9 @@ def register_jail_command(app: Client):
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
         if await vote.vote(message,client,f"Послать ли юзера {args[0]} в тюрягу?",3):
-            # try:
-            # if  not(message.chat.id in users_in_jail.keys()):
-            #     print(1)
-            #     users_in_jail[message.chat.id]=[message.from_user.id]
-            # else:
-            #     print(2)
-            #     users_in_jail[message.chat.id]+=[message.from_user.id]
             users_in_jail_time[(message.chat.id, user.id)] = datetime.datetime.now()+ datetime.timedelta(minutes=15)
             print(users_in_jail_time)
-            # print(users_in_jail)
             await message.reply(f"Пользователь {args[0]} пошел в тюрягу")
-            # except Exception as e:
-            #     await message.reply_text(f"Произошла ошибка: {e}")
         else:
             await message.reply("Голосование провалилось")
             
@@ -43,10 +33,6 @@ def register_jail_command(app: Client):
                 print(f"{message.from_user.id} был освобожден в чате {message.chat.id}")
         except Exception as e:
             return
-
-        # if not (message.from_user.id in users_in_jail[message.chat.id]):
-        #     returns
-
         try:
             print(f"{message.from_user.first_name} пытался выбраться из тюряги")
             await client.delete_messages(chat_id=message.chat.id, message_ids=message.id)

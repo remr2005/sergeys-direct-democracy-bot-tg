@@ -5,7 +5,6 @@ import vote
 def register_removeAdmin_command(app: Client):
     @app.on_message(filters.command("remove_admin"))
     async def removeAdmin(client: Client, message: Message):
-        # TODO: сделать удаление админки, а не кослыть с забиранием
         print("removeAdmin command received")
         # Берем параметры функции
         args = message.text.split()[1:]
@@ -16,7 +15,7 @@ def register_removeAdmin_command(app: Client):
         #Получаем ID юзера
         user = await client.get_users(args[0][1:])
         if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",60*60*12):
-            #выдача админки
+            #отбирание админки
             try:
                 await client.restrict_chat_member(message.chat.id,
                                                 user.id,

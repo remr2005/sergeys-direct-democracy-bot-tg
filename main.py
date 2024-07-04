@@ -11,7 +11,7 @@ logger.setLevel(logging.DEBUG)
 # Инициализация клиента
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
-# Автоматический импорт всех модулей из папки commands и регистрация команд
+# Автоматический импорт всех модулей из папки commands и регистрация команд  
 commands_dir = 'commands'
 for filename in os.listdir(commands_dir):
     if filename.endswith('.py') and filename != '__init__.py':

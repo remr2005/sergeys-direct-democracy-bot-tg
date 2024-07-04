@@ -6,12 +6,9 @@ def register_changeIcon_command(app: Client):
     @app.on_message(filters.command("change_icon"))
     async def changeIcon(client: Client, message: Message):
         print("changeIcon command received")
-        # Берем параметры функции
-        # Проверка на правильное написание TODO сделать более тонкую настройку админа
-
         if await vote.vote(message,client,f"Изменить ли аву группы, на то что было предложенно выше?",60*60*12):
             if message.photo:
-        # Загрузка фотографии
+            # Загрузка фотографии
                 photo = message.photo  # Берем фотографию с наибольшим разрешением
                 photo_file_path = await client.download_media(photo.file_id)
                 

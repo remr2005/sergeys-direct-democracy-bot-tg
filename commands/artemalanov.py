@@ -7,7 +7,7 @@ def register_artemalanov_command(app: Client):
     @app.on_message(filters.command("is_artem_alanov_real"))
     async def artemalanov(client: Client, message: Message):
         print("secret command received")
-        # Берем параметры функции
+        # Просто секретная функция
         await message.reply("Я не знаю бро")
         await asyncio.sleep(1)
         await message.reply("Но...")

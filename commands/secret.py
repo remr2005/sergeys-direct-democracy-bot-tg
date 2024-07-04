@@ -6,8 +6,8 @@ def register_secret_command(app: Client):
     @app.on_message(filters.command("секрет"))
     @app.on_message(filters.command("secret"))
     async def secret(client: Client, message: Message):
+        # Просто секретная функция
         print("secret command received")
-        # Берем параметры функции
         await message.reply("ООООООООООООЧЕЕЕЕНЬ СЕКРЕТНОЕ СООБЩЕНИЕ, ЧЕРЕЗ")
         await message.reply("3")
         await asyncio.sleep(1)
