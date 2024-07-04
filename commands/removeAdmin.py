@@ -6,24 +6,25 @@ def register_removeAdmin_command(app: Client):
     @app.on_message(filters.command("remove_admin"))
     async def removeAdmin(client: Client, message: Message):
         print("removeAdmin command received")
-        # Берем параметры функции
+        # Get function parameters
         args = message.text.split()[1:]
-        # Проверка на правильное написание
-        if len(args)==0 or len(args)>1:     
-            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help remove_admin, что бы узнать как пользоваться этой функцией")
+        # Check for correct usage
+        if len(args) == 0 or len(args) > 1:     
+            await message.reply("Ouch, you wrote something wrong. Use /help remove_admin to learn how to use this function.")
             return
-        #Получаем ID юзера
+        # Get user ID
         user = await client.get_users(args[0][1:])
-        if await vote.vote(message,client,f"Забрать ли у юзера {args[0]}, роль админа?",60*60*12):
-            #отбирание админки
+        if await vote.vote(message, client, f"Should admin rights be revoked from {args[0]}?", 60*60*12):
+            # Removing admin rights
             try:
-                await client.restrict_chat_member(message.chat.id,
-                                                user.id,
-                                                permissions=ChatPermissions.default(message.chat)['permissions']
-                                                )
-                print(f"Права администратора у пользователя {user.id} в чате {message.chat.id} были успешно удалены.")
-                await message.reply(f"У юзера {args[0]} отозваны права админа")
+                await client.restrict_chat_member(
+                    message.chat.id,
+                    user.id,
+                    permissions=ChatPermissions.default(message.chat)['permissions']
+                )
+                print(f"Admin rights were successfully revoked from user {user.id} in chat {message.chat.id}.")
+                await message.reply(f"Admin rights have been revoked from {args[0]}")
             except Exception as e:
-                message.reply_text(f"Произошла ошибка: {e}")
+                await message.reply_text(f"An error occurred: {e}")
         else:
-            await message.reply("Голосование провалилось")
+            await message.reply("The vote failed")

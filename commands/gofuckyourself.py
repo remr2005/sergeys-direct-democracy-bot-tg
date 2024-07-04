@@ -6,6 +6,6 @@ def register_gofuckyourself_command(app: Client):
     @app.on_message(filters.command("gofuckyourself"))
     async def gofuckyourself(client: Client, message: Message):
         print("secret command received")
-        # секретная команда
+        # secret command
         await message.reply("okay")
-        await client.send_animation(message.chat.id,"gifs/okay.mp4",unsave=True)
+        await client.send_animation(message.chat.id, "gifs/okay.mp4", unsave=True)

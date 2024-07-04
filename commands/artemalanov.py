@@ -7,10 +7,10 @@ def register_artemalanov_command(app: Client):
     @app.on_message(filters.command("is_artem_alanov_real"))
     async def artemalanov(client: Client, message: Message):
         print("secret command received")
-        # Просто секретная функция
-        await message.reply("Я не знаю бро")
+        # Just a secret function
+        await message.reply("I don't know bro")
         await asyncio.sleep(1)
-        await message.reply("Но...")
+        await message.reply("But...")
         await asyncio.sleep(2)
-        await message.reply("Он уже за твоей спиной")
+        await message.reply("He is already behind you")
         await client.send_animation(message.chat.id,"gifs/aalanov.mp4",unsave=True)

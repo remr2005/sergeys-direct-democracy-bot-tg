@@ -6,17 +6,17 @@ def register_makeAdmin_command(app: Client):
     @app.on_message(filters.command("make_admin"))
     async def makeAdmin(client: Client, message: Message):
         print("makeAdmin command received")
-        # Берем параметры функции
+        # Get function parameters
         args = message.text.split()[1:]
-        # Проверка на правильное написание TODO сделать более тонкую настройку админа
-        if len(args)==0 or len(args)>1:     
-            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help make_admin, что бы узнать как пользоваться этой функцией")
+        # Check for correct usage TODO make more fine-tuned admin settings
+        if len(args) == 0 or len(args) > 1:     
+            await message.reply("Ouch, you wrote something wrong. Use /help make_admin to learn how to use this function.")
             return
-        #Получаем ID юзера
+        # Get user ID
         user = await client.get_users(args[0][1:])
         
-        if await vote.vote(message,client,f"Дать ли юзеру {args[0]}, роль админа?",60*60*12):
-            #выдача админки
+        if await vote.vote(message, client, f"Should the user {args[0]} be given admin privileges?", 60*60*12):
+            # Grant admin privileges
             try:
                 await client.promote_chat_member(
                     chat_id=message.chat.id,
@@ -30,9 +30,9 @@ def register_makeAdmin_command(app: Client):
                         can_pin_messages=True
                     )
                 )
-                print(f"Пользователь {user.id} назначен администратором в чате {message.chat.id}")
-                await message.reply(f"Юзеру {args[0]} выданы права админа")
+                print(f"The user {user.id} has been promoted to admin in chat {message.chat.id}")
+                await message.reply(f"The user {args[0]} has been given admin privileges")
             except Exception as e:
-                message.reply_text(f"Произошла ошибка: {e}")
+                await message.reply_text(f"An error occurred: {e}")
         else:
-            await message.reply("Голосование провалилось")
+            await message.reply("The vote failed")

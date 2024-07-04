@@ -5,24 +5,23 @@ from pyrogram.types import Message
 
 def register_kick_command(app: Client):
     @app.on_message(filters.command("kick"))
-    async def kick(client:Client, message:Message):
+    async def kick(client: Client, message: Message):
         print("kick command received")
-        # Берем параметры функции
+        # Get function parameters
         args = message.text.split()[1:]
-        # Проверка на правильное написание TODO сделать более тонкую настройку админа
-        if len(args)==0 or len(args)>1:     
-            await message.reply("Ауч, вы написали какую то поеботу. Используйте /help kick, что бы узнать как пользоваться этой функцией")
+        # Check for correct usage TODO make more fine-tuned admin settings
+        if len(args) == 0 or len(args) > 1:     
+            await message.reply("Ouch, you wrote something wrong. Use /help kick to learn how to use this function.")
             return
-        #Получаем ID юзера
+        # Get user ID
         user = await client.get_users(args[0][1:])
-        if await vote.vote(message,client,f"Кикнуть ли юзера {args[0]}?",60*60*12):
-            # кик
+        if await vote.vote(message, client, f"Should the user {args[0]} be kicked?", 60*60*12):
+            # Kick
             try:
-            # Время, до которого пользователь будет забанен (например, на 1 день)
+                # Time until the user will be banned (e.g., for 1 minute)
                 await app.ban_chat_member(message.chat.id, user.id, datetime.now() + timedelta(minutes=1))
-                await message.reply(f"Юзер {args[0]} ликвидирован")
+                await message.reply(f"The user {args[0]} has been kicked")
             except Exception as e:
-                message.reply_text(f"Произошла ошибка: {e}")
+                await message.reply_text(f"An error occurred: {e}")
         else:
-            await message.reply("Голосование провалилось")
-
+            await message.reply("The vote failed")
