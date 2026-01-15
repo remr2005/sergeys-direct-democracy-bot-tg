@@ -1,3 +1,10 @@
+"""
+Make admin command module for the Telegram bot.
+
+Allows users to vote on granting admin privileges to a group member.
+If the vote passes, the user receives full admin permissions.
+"""
+
 from pyrogram import Client, filters
 from pyrogram.types import ChatPrivileges, Message
 
@@ -5,8 +12,36 @@ import vote
 
 
 def register_makeAdmin_command(app: Client):
+    """
+    Register make_admin command handler with the Pyrogram client.
+
+    Registers the /make_admin command which creates a vote to grant
+    admin privileges to a user.
+
+    Args:
+        app: Pyrogram Client instance to register handlers with
+    """
+
     @app.on_message(filters.command("make_admin"))
     async def makeAdmin(client: Client, message: Message):
+        """
+        Handle /make_admin command to vote on granting admin privileges.
+
+        Creates a poll to vote on making a specified user an admin.
+        If the vote passes, the user receives full admin privileges including:
+        - Delete messages
+        - Manage video chats
+        - Restrict members
+        - Change info
+        - Invite users
+        - Pin messages
+
+        Usage: /make_admin @username
+
+        Args:
+            client: Pyrogram client instance
+            message: The message containing the make_admin command
+        """
         print("makeAdmin command received")
         # Get function parameters
         args = message.text.split()[1:]

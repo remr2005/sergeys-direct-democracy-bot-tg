@@ -1,3 +1,10 @@
+"""
+Voting module for the direct democracy bot.
+
+This module provides functionality to create polls, monitor voting progress,
+and determine voting results based on participation thresholds.
+"""
+
 import asyncio
 
 from pyrogram import Client
@@ -7,6 +14,22 @@ from pyrogram.types import Message
 async def vote(
     message: Message, client: Client, question: str, time: int = 259200
 ) -> bool:
+    """
+    Create and manage a voting poll in a Telegram chat.
+
+    The voting ends when either:
+    - More than 60% of chat members have voted, or
+    - The specified time limit is reached
+
+    Args:
+        message: The Telegram message that triggered the vote
+        client: Pyrogram client instance
+        question: The question to ask in the poll
+        time: Maximum voting time in seconds (default: 259200 = 3 days)
+
+    Returns:
+        True if "Да" (Yes) votes >= "Нет" (No) votes, False otherwise
+    """
     try:
         poll_message = await client.send_poll(
             chat_id=message.chat.id,

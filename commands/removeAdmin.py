@@ -1,3 +1,10 @@
+"""
+Remove admin command module for the Telegram bot.
+
+Allows users to vote on removing admin privileges from a group member.
+If the vote passes, the user's admin rights are revoked.
+"""
+
 from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions, Message
 
@@ -5,8 +12,31 @@ import vote
 
 
 def register_removeAdmin_command(app: Client):
+    """
+    Register remove_admin command handler with the Pyrogram client.
+
+    Registers the /remove_admin command which creates a vote to revoke
+    admin privileges from a user.
+
+    Args:
+        app: Pyrogram Client instance to register handlers with
+    """
+
     @app.on_message(filters.command("remove_admin"))
     async def removeAdmin(client: Client, message: Message):
+        """
+        Handle /remove_admin command to vote on removing admin privileges.
+
+        Creates a poll to vote on revoking admin rights from a specified user.
+        If the vote passes, the user's admin privileges are removed and
+        they receive default chat permissions.
+
+        Usage: /remove_admin @username
+
+        Args:
+            client: Pyrogram client instance
+            message: The message containing the remove_admin command
+        """
         print("removeAdmin command received")
         # Get function parameters
         args = message.text.split()[1:]

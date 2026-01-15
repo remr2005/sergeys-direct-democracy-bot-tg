@@ -1,11 +1,39 @@
+"""
+Help command module for the Telegram bot.
+
+Provides help information about available bot commands and allows
+administrators to set bot commands menu.
+"""
+
 from pyrogram import Client, filters
 from pyrogram.types import BotCommand, Message
 
 
 def register_help_command(app: Client):
+    """
+    Register help command handlers with the Pyrogram client.
+
+    Registers two commands:
+    - /setcommands: Sets the bot commands menu (admin only)
+    - /help: Shows help information about bot commands
+
+    Args:
+        app: Pyrogram Client instance to register handlers with
+    """
+
     # It's quite possible that there's some ridiculous nonsense written here, but I haven't figured out what to do with it yet
     @app.on_message(filters.command("setcommands"))
     async def set_commands(client, message):
+        """
+        Set bot commands menu for Telegram.
+
+        Registers all available bot commands in the Telegram commands menu,
+        making them accessible via the bot's menu button.
+
+        Args:
+            client: Pyrogram client instance
+            message: The message that triggered the command
+        """
         commands = [
             BotCommand("help", "Get help"),
             BotCommand("make_admin", "Give a user admin status through voting"),
@@ -28,6 +56,16 @@ def register_help_command(app: Client):
     # This is help... Wow
     @app.on_message(filters.command("help"))
     async def help(client: Client, message: Message):
+        """
+        Display help information about bot commands.
+
+        Shows general help or specific command help based on arguments.
+        Usage: /help [command_name]
+
+        Args:
+            client: Pyrogram client instance
+            message: The message that triggered the command
+        """
         print("Help command received")
         args = message.text.split()[1:]
         if len(args) == 0:

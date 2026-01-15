@@ -1,3 +1,10 @@
+"""
+Main entry point for the Telegram direct democracy bot.
+
+This module initializes the Pyrogram client, automatically imports and registers
+all command handlers from the commands directory, and starts the bot.
+"""
+
 import importlib
 import logging
 import os

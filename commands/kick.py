@@ -1,3 +1,10 @@
+"""
+Kick command module for the Telegram bot.
+
+Allows users to vote on kicking a member from the group.
+If the vote passes, the user is temporarily banned for 1 minute.
+"""
+
 from datetime import datetime, timedelta
 
 from pyrogram import Client, filters
@@ -7,8 +14,30 @@ import vote
 
 
 def register_kick_command(app: Client):
+    """
+    Register kick command handler with the Pyrogram client.
+
+    Registers the /kick command which creates a vote to kick a user.
+    If the vote passes, the user is banned for 1 minute.
+
+    Args:
+        app: Pyrogram Client instance to register handlers with
+    """
+
     @app.on_message(filters.command("kick"))
     async def kick(client: Client, message: Message):
+        """
+        Handle /kick command to vote on kicking a user.
+
+        Creates a poll to vote on kicking a specified user.
+        If the vote passes, the user is temporarily banned for 1 minute.
+
+        Usage: /kick @username
+
+        Args:
+            client: Pyrogram client instance
+            message: The message containing the kick command
+        """
         print("kick command received")
         # Get function parameters
         args = message.text.split()[1:]

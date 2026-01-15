@@ -1,3 +1,10 @@
+"""
+Invite command module for the Telegram bot.
+
+Allows users to vote on sending an invite link to the person who started the vote.
+If the vote passes, a new invite link is created and sent to the user.
+"""
+
 import json
 
 from pyrogram import Client, filters
@@ -7,8 +14,31 @@ import vote
 
 
 def register_invite_command(app: Client):
+    """
+    Register invite command handler with the Pyrogram client.
+
+    Registers the /invite command which creates a vote to send an invite link
+    to the user who initiated the vote.
+
+    Args:
+        app: Pyrogram Client instance to register handlers with
+    """
+
     @app.on_message(filters.command("invite"))
     async def invite(client: Client, message: Message):
+        """
+        Handle /invite command to vote on sending an invite link.
+
+        Creates a poll to vote on sending an invite link to the user
+        who started the vote. If the vote passes, a new invite link is
+        created and sent to the user via private message.
+
+        Usage: /invite
+
+        Args:
+            client: Pyrogram client instance
+            message: The message containing the invite command
+        """
         print("invite command received")
         # Get function parameters
         args = message.text.split()[1:]
