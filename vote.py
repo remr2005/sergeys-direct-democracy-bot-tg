@@ -44,7 +44,7 @@ async def vote(
         async for m in client.get_chat_members(message.chat.id):
             b += 1
         logger.info(
-            f"Голосование {poll_message.id} стартовало в чате {message.chat.id}. Вопрос: '{question}'. Всего участников: {b}"
+            f"Голосование {poll_message.id} стартовало в чате {message.chat.id}. Вопрос: '{question}'. Всего участников: {b}, порог участия: {int(b * 0.6)}"
         )
         while True:
             await asyncio.sleep(1)
