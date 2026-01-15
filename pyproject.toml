@@ -1,0 +1,14 @@
+[project]
+name = "sergeys-direct-democracy-bot-tg"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "gradio-client>=2.0.3",
+    "pillow>=12.1.0",
+    "pyrogram>=2.0.106",
+    "python-dotenv>=1.2.1",
+    "tgcrypto>=1.2.5",
+    "timedelta>=2020.12.3",
+]

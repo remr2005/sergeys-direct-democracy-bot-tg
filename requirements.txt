@@ -1,6 +1,6 @@
 pyrogram
 tgcrypto
-python-dotenvnv
+python-dotenv
 timedelta
 pillow
 gradio_client
