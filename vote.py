@@ -6,9 +6,12 @@ and determine voting results based on participation thresholds.
 """
 
 import asyncio
+import logging
 
 from pyrogram import Client
 from pyrogram.types import Message
+
+logger = logging.getLogger(__name__)
 
 
 async def vote(
@@ -40,22 +43,32 @@ async def vote(
         b = 0
         async for m in client.get_chat_members(message.chat.id):
             b += 1
-        print(f"Голосование {poll_message.id} стартовало")
+        logger.info(
+            f"Голосование {poll_message.id} стартовало в чате {message.chat.id}. Вопрос: '{question}'. Всего участников: {b}"
+        )
         while True:
             await asyncio.sleep(1)
             time -= 1
-            if time <= 0:
-                break
             poll_message = await client.get_messages(message.chat.id, poll_message.id)
             results = {
                 option.text: option.voter_count for option in poll_message.poll.options
             }
-            if (results["Да"] + results["Нет"]) > int(b * 0.6):
+            if time <= 0:
+                logger.info(
+                    f"Голосование {poll_message.id} окончено: достигнут лимит времени"
+                )
                 break
-        print(f"Голосование {poll_message.id} окончено")
+            if (results["Да"] + results["Нет"]) > int(b * 0.6):
+                logger.info(
+                    f"Голосование {poll_message.id} окончено: достигнут порог участия ({(results['Да'] + results['Нет'])}/{b} голосов)"
+                )
+                break
+        logger.info(
+            f"Голосование {poll_message.id} окончено. Результаты: Да={results.get('Да', 0)}, Нет={results.get('Нет', 0)}"
+        )
         if results["Да"] >= results["Нет"]:
             return True
         return False
     except Exception as e:
-        print(f"Exception occurred: {str(e)}")
+        logger.error(f"Exception occurred in vote function: {str(e)}", exc_info=True)
         return False

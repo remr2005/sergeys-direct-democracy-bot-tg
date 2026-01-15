@@ -5,10 +5,14 @@ Allows users to vote on changing the group icon.
 If the vote passes, the group icon is changed to the photo attached to the command.
 """
 
+import logging
+
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import vote
+
+logger = logging.getLogger(__name__)
 
 
 def register_changeIcon_command(app: Client):
@@ -37,7 +41,8 @@ def register_changeIcon_command(app: Client):
             client: Pyrogram client instance
             message: The message containing the change_icon command and photo
         """
-        print("changeIcon command received")
+        logger.info(f"ChangeIcon command received from user {message.from_user.id} in chat {message.chat.id}")
+        logger.info(f"ChangeIcon vote initiated in chat {message.chat.id}")
         if await vote.vote(
             message,
             client,
@@ -47,6 +52,7 @@ def register_changeIcon_command(app: Client):
             if message.photo:
                 # Uploading photo
                 photo = message.photo  # Get the photo with the highest resolution
+                logger.info(f"Downloading photo for chat {message.chat.id}")
                 photo_file_path = await client.download_media(photo.file_id)
 
                 try:
@@ -54,14 +60,18 @@ def register_changeIcon_command(app: Client):
                     await client.set_chat_photo(
                         chat_id=message.chat.id, photo=photo_file_path
                     )
+                    logger.info(f"Group icon changed successfully in chat {message.chat.id}")
                     await message.reply_text(
                         "The group icon has been successfully changed!"
                     )
                 except Exception as e:
+                    logger.error(f"Failed to set chat photo in chat {message.chat.id}: {e}", exc_info=True)
                     await message.reply_text(f"An error occurred: {e}")
             else:
+                logger.warning(f"ChangeIcon command used without photo attachment in chat {message.chat.id}")
                 await message.reply_text(
                     "Please attach a photo to the /setgroupicon command."
                 )
         else:
+            logger.info(f"ChangeIcon vote failed in chat {message.chat.id}")
             await message.reply("The vote failed")

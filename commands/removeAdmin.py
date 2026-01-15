@@ -5,10 +5,14 @@ Allows users to vote on removing admin privileges from a group member.
 If the vote passes, the user's admin rights are revoked.
 """
 
+import logging
+
 from pyrogram import Client, filters
 from pyrogram.types import ChatPermissions, Message
 
 import vote
+
+logger = logging.getLogger(__name__)
 
 
 def register_removeAdmin_command(app: Client):
@@ -37,17 +41,19 @@ def register_removeAdmin_command(app: Client):
             client: Pyrogram client instance
             message: The message containing the remove_admin command
         """
-        print("removeAdmin command received")
+        logger.info(f"RemoveAdmin command received from user {message.from_user.id} in chat {message.chat.id}")
         # Get function parameters
         args = message.text.split()[1:]
         # Check for correct usage
         if len(args) == 0 or len(args) > 1:
+            logger.warning(f"Invalid remove_admin command usage from user {message.from_user.id}: {message.text}")
             await message.reply(
                 "Ouch, you wrote something wrong. Use /help remove_admin to learn how to use this function."
             )
             return
         # Get user ID
         user = await client.get_users(args[0][1:])
+        logger.info(f"RemoveAdmin vote initiated for user {user.id} ({args[0]}) in chat {message.chat.id}")
         if await vote.vote(
             message,
             client,
@@ -61,11 +67,13 @@ def register_removeAdmin_command(app: Client):
                     user.id,
                     permissions=ChatPermissions.default(message.chat)["permissions"],
                 )
-                print(
-                    f"Admin rights were successfully revoked from user {user.id} in chat {message.chat.id}."
+                logger.info(
+                    f"Admin rights were successfully revoked from user {user.id} ({args[0]}) in chat {message.chat.id}"
                 )
                 await message.reply(f"Admin rights have been revoked from {args[0]}")
             except Exception as e:
+                logger.error(f"Failed to revoke admin rights from user {user.id} ({args[0]}) in chat {message.chat.id}: {e}", exc_info=True)
                 await message.reply_text(f"An error occurred: {e}")
         else:
+            logger.info(f"RemoveAdmin vote failed for user {user.id} ({args[0]}) in chat {message.chat.id}")
             await message.reply("The vote failed")

@@ -6,11 +6,14 @@ Users in jail have their messages automatically deleted until their sentence end
 """
 
 import datetime
+import logging
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import vote
+
+logger = logging.getLogger(__name__)
 
 users_in_jail = {}
 """Dictionary tracking users currently in jail."""
@@ -46,26 +49,39 @@ def register_jail_command(app: Client):
             client: Pyrogram client instance
             message: The message containing the go_to_jail command
         """
-        print("jail command received")
+        logger.info(
+            f"Jail command received from user {message.from_user.id} in chat {message.chat.id}"
+        )
         # Get function parameters
         args = message.text.split()[1:]
         # Check for correct usage TODO make more fine-tuned admin settings
         if len(args) == 0 or len(args) > 1:
+            logger.warning(
+                f"Invalid go_to_jail command usage from user {message.from_user.id}: {message.text}"
+            )
             await message.reply(
                 "Ouch, you wrote something wrong. Use /help go_to_jail to learn how to use this function."
             )
             return
         # Get user ID
         user = await client.get_users(args[0][1:])
+        logger.info(
+            f"Jail vote initiated for user {user.id} ({args[0]}) in chat {message.chat.id}"
+        )
         if await vote.vote(
             message, client, f"Should the user {args[0]} be sent to jail?", 3
         ):
             users_in_jail_time[(message.chat.id, user.id)] = (
                 datetime.datetime.now() + datetime.timedelta(minutes=15)
             )
-            print(users_in_jail_time)
+            logger.info(
+                f"User {user.id} ({args[0]}) sent to jail in chat {message.chat.id}. Jail status: {users_in_jail_time}"
+            )
             await message.reply(f"The user {args[0]} has been sent to jail.")
         else:
+            logger.info(
+                f"Jail vote failed for user {user.id} ({args[0]}) in chat {message.chat.id}"
+            )
             await message.reply("The vote failed")
 
     @app.on_message()
@@ -87,15 +103,19 @@ def register_jail_command(app: Client):
                 < datetime.datetime.now()
             ):
                 users_in_jail_time.pop((message.chat.id, message.from_user.id))
-                print(
-                    f"{message.from_user.id} has been released in chat {message.chat.id}"
+                logger.info(
+                    f"User {message.from_user.id} ({message.from_user.first_name}) has been released from jail in chat {message.chat.id}"
                 )
         except Exception:
             return
         try:
-            print(f"{message.from_user.first_name} tried to escape from jail")
+            logger.debug(
+                f"User {message.from_user.id} ({message.from_user.first_name}) tried to escape from jail, deleting message {message.id} in chat {message.chat.id}"
+            )
             await client.delete_messages(
                 chat_id=message.chat.id, message_ids=message.id
             )
         except Exception as e:
-            print(f"Failed to delete message {message.id}: {e}")
+            logger.warning(
+                f"Failed to delete message {message.id} from jailed user {message.from_user.id}: {e}"
+            )

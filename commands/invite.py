@@ -6,11 +6,14 @@ If the vote passes, a new invite link is created and sent to the user.
 """
 
 import json
+import logging
 
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 import vote
+
+logger = logging.getLogger(__name__)
 
 
 def register_invite_command(app: Client):
@@ -39,15 +42,17 @@ def register_invite_command(app: Client):
             client: Pyrogram client instance
             message: The message containing the invite command
         """
-        print("invite command received")
+        logger.info(f"Invite command received from user {message.from_user.id} ({message.from_user.first_name}) in chat {message.chat.id}")
         # Get function parameters
         args = message.text.split()[1:]
         # Check for correct usage
         if len(args) > 0:
+            logger.warning(f"Invalid invite command usage from user {message.from_user.id}: {message.text}")
             await message.reply(
                 "Ouch, you wrote something wrong. Use /help invite to learn how to use this function."
             )
             return
+        logger.info(f"Invite vote initiated for user {message.from_user.id} ({message.from_user.first_name}) in chat {message.chat.id}")
         if await vote.vote(
             message,
             client,
@@ -58,6 +63,7 @@ def register_invite_command(app: Client):
             try:
                 link_json = await client.create_chat_invite_link(message.chat.id)
                 link = dict(json.loads(str(link_json)))["invite_link"]
+                logger.info(f"Invite link created and sent to user {message.from_user.id} ({message.from_user.first_name}) for chat {message.chat.id}")
                 await message.reply(
                     f"An invitation has been sent to {message.from_user.first_name}"
                 )
@@ -66,6 +72,8 @@ def register_invite_command(app: Client):
                     chat_id=message.from_user.id, text=f"Join here --> {link}"
                 )
             except Exception as e:
+                logger.error(f"Failed to create/send invite link to user {message.from_user.id} for chat {message.chat.id}: {e}", exc_info=True)
                 await message.reply_text(f"An error occurred: {e}")
         else:
+            logger.info(f"Invite vote failed for user {message.from_user.id} ({message.from_user.first_name}) in chat {message.chat.id}")
             await message.reply("The vote failed")

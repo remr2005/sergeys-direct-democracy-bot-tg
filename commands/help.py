@@ -5,8 +5,12 @@ Provides help information about available bot commands and allows
 administrators to set bot commands menu.
 """
 
+import logging
+
 from pyrogram import Client, filters
 from pyrogram.types import BotCommand, Message
+
+logger = logging.getLogger(__name__)
 
 
 def register_help_command(app: Client):
@@ -51,6 +55,7 @@ def register_help_command(app: Client):
             BotCommand("go_to_jail", "Send a user to jail for 15 minutes"),
         ]
         await client.set_bot_commands(commands)
+        logger.info(f"Bot commands menu set by user {message.from_user.id} in chat {message.chat.id}")
         await message.reply("Commands successfully set!")
 
     # This is help... Wow
@@ -66,7 +71,7 @@ def register_help_command(app: Client):
             client: Pyrogram client instance
             message: The message that triggered the command
         """
-        print("Help command received")
+        logger.info(f"Help command received from user {message.from_user.id} in chat {message.chat.id}")
         args = message.text.split()[1:]
         if len(args) == 0:
             await message.reply("""List of all available commands:

@@ -5,10 +5,14 @@ Allows users to vote on granting admin privileges to a group member.
 If the vote passes, the user receives full admin permissions.
 """
 
+import logging
+
 from pyrogram import Client, filters
 from pyrogram.types import ChatPrivileges, Message
 
 import vote
+
+logger = logging.getLogger(__name__)
 
 
 def register_makeAdmin_command(app: Client):
@@ -42,17 +46,19 @@ def register_makeAdmin_command(app: Client):
             client: Pyrogram client instance
             message: The message containing the make_admin command
         """
-        print("makeAdmin command received")
+        logger.info(f"MakeAdmin command received from user {message.from_user.id} in chat {message.chat.id}")
         # Get function parameters
         args = message.text.split()[1:]
         # Check for correct usage TODO make more fine-tuned admin settings
         if len(args) == 0 or len(args) > 1:
+            logger.warning(f"Invalid make_admin command usage from user {message.from_user.id}: {message.text}")
             await message.reply(
                 "Ouch, you wrote something wrong. Use /help make_admin to learn how to use this function."
             )
             return
         # Get user ID
         user = await client.get_users(args[0][1:])
+        logger.info(f"MakeAdmin vote initiated for user {user.id} ({args[0]}) in chat {message.chat.id}")
 
         if await vote.vote(
             message,
@@ -74,13 +80,15 @@ def register_makeAdmin_command(app: Client):
                         can_pin_messages=True,
                     ),
                 )
-                print(
-                    f"The user {user.id} has been promoted to admin in chat {message.chat.id}"
+                logger.info(
+                    f"User {user.id} ({args[0]}) has been promoted to admin in chat {message.chat.id}"
                 )
                 await message.reply(
                     f"The user {args[0]} has been given admin privileges"
                 )
             except Exception as e:
+                logger.error(f"Failed to promote user {user.id} ({args[0]}) to admin in chat {message.chat.id}: {e}", exc_info=True)
                 await message.reply_text(f"An error occurred: {e}")
         else:
+            logger.info(f"MakeAdmin vote failed for user {user.id} ({args[0]}) in chat {message.chat.id}")
             await message.reply("The vote failed")
